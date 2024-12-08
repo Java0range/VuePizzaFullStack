@@ -1,7 +1,7 @@
 FROM node:alpine AS build
 
 COPY package.json package.json
-RUN npx npm-check-updates -u && npm install
+RUN npm install -g npm@10.9.2
 COPY . .
 RUN npm run build
 
