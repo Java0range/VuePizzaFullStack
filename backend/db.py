@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 
 def get_items(sort: str):
@@ -71,3 +72,13 @@ def auth(username: str, password: str):
         return True
     else:
         return False
+
+
+def delete_item(name: str):
+    conn = sqlite3.connect('database.db')
+    cur = conn.cursor()
+    img_url = cur.execute('SELECT imgUrl FROM Items WHERE name = ?', (name,)).fetchall()[0][0]
+    os.remove(f".{img_url}")
+    cur.execute('DELETE FROM Items WHERE name = ?', (name,))
+    conn.commit()
+    conn.close()

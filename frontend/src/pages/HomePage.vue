@@ -43,7 +43,7 @@ const removeToCart = (item) => {
 }
 const createOrder = async () => {
   try {
-    await axios.post("http://127.0.0.1:8000/orders", {
+    await axios.post("/orders", {
       items: cartItems.value,
       total_price: totalPrice.value
     })
@@ -65,7 +65,7 @@ const onChangeSort = (event) => {
 
 onMounted(async () => {
   try {
-    const { data } = await axios.get("http://127.0.0.1:8000/items/name")
+    const { data } = await axios.get("/items/name")
     items.value = data;
   } catch (err) {
     console.log(err);
@@ -77,7 +77,7 @@ onMounted(async () => {
 watch(sortBy, async () => {
   try {
     console.log(sortBy.value);
-    const { data } = await axios.get("http://127.0.0.1:8000/items/" + sortBy.value);
+    const { data } = await axios.get("/items/" + sortBy.value);
     items.value = data;
     console.log(items.value);
   } catch (err) {
