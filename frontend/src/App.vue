@@ -2,7 +2,7 @@
 import axios from 'axios'
 import { provide, ref } from 'vue'
 
-const serverUrl = ref('http://80.249.150.206:8000/api')
+const serverUrl = ref('http://80.249.150.206/api')
 
 axios.defaults.baseURL = serverUrl.value
 
