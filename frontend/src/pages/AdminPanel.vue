@@ -9,14 +9,17 @@ const errorWindow = ref(false)
 const errorWindowClose = () => {
   errorWindow.value = false
 }
+const access_token = ref("")
 const auth =  async (username, password) => {
   try {
     const { data } = await axios.post("/auth/", {
       username: username,
       password: password,
     });
-    if (data === "true") {
+    if (data !== "false") {
       authUser.value = true;
+      access_token.value = data
+      console.log(access_token.value)
     } else {
       errorWindow.value = true;
     }
@@ -28,6 +31,6 @@ const auth =  async (username, password) => {
 
 <template>
   <Auth v-if="!authUser" @auth="auth"/>
-  <Panel v-if="authUser"/>
+  <Panel v-if="authUser" :access-token="access_token"/>
   <ErrorWindow v-if="errorWindow" :widow-close="errorWindowClose"/>
 </template>

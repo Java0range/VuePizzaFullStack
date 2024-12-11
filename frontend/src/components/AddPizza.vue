@@ -11,7 +11,8 @@ const priceItem = ref("")
 
 const props = defineProps({
   getItems: Function,
-  closeClicked: Function
+  closeClicked: Function,
+  accessToken: String
 })
 
 const onFileChange = (e) => {
@@ -22,12 +23,18 @@ const createItem = async () => {
   try {
     const formData = new FormData();
     formData.append("upload_file", selectedFile.value);
-    const { data } = await axios.post("/upload", formData)
+    const headers = {
+      headers: {
+        token: props.accessToken
+      }
+    }
+    const { data } = await axios.post("/upload", formData, headers)
     const formDataItem = {
       name: nameItems.value,
       img: data,
       desc: items.value,
-      price: priceItem.value
+      price: priceItem.value,
+      token: props.accessToken
     }
     await axios.post("/add/", formDataItem)
     props.getItems();

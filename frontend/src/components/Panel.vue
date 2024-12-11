@@ -7,6 +7,10 @@ import AddPizza from '@/components/AddPizza.vue'
 const items = ref([])
 const createWindow = ref(false)
 
+const props = defineProps({
+  accessToken: String
+})
+
 const openCreateWindow = () => {
   createWindow.value = true;
 }
@@ -19,9 +23,10 @@ const deleteItem = async (item) => {
   try {
     const fromData = {
       name: item.name,
+      token: props.accessToken
     }
     await axios.delete("/delete/", { data: fromData })
-    getItems();
+    await getItems();
   } catch (err) {
     console.log(err);
   }
@@ -46,7 +51,7 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <AddPizza v-if="createWindow" :close-clicked="closeCreateWindow" :get-items="getItems" />
+  <AddPizza v-if="createWindow" :close-clicked="closeCreateWindow" :get-items="getItems" :access-token="accessToken" />
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14">
     <div class="p-10">
       <div class="flex justify-between p-4 items-center max-sm:flex-col max-sm:gap-2">

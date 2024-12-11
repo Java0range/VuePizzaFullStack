@@ -1,7 +1,8 @@
 import random
 import shutil
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, File, UploadFile, Header
 from fastapi.responses import FileResponse
+from admin import security
 import db
 
 
@@ -14,12 +15,14 @@ def create_signature():
 
 
 @files.post("/upload")
-async def upload_file(upload_file: UploadFile = File(...)):
-    upload_file.filename = f"{len(db.get_items('name')) + 1}.{upload_file.filename.split('.')[1]}"
-    path = f"pizzas/{upload_file.filename}"
-    with open(path, "wb+") as buffer:
-        shutil.copyfileobj(upload_file.file, buffer)
-    return f"/{path}"
+async def upload_file(upload_file: UploadFile = File(...), token: str = Header(...)):
+    if security.verify_token(token):
+        upload_file.filename = f"{len(db.get_items('name')) + 1}.{upload_file.filename.split('.')[1]}"
+        path = f"pizzas/{upload_file.filename}"
+        with open(path, "wb+") as buffer:
+            shutil.copyfileobj(upload_file.file, buffer)
+        return f"/{path}"
+    return "false"
 
 
 @files.get("/pizzas/{file_name}", response_class=FileResponse)
