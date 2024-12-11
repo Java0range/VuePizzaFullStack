@@ -13,7 +13,7 @@ app.include_router(admin)
 app.include_router(files)
 
 
-origins = ['http://80.249.150.206', "http://localhost:5173"]
+origins = ['http://80.249.150.206:5173', "http://localhost:5173"]
 
 app.add_middleware(
     CORSMiddleware,

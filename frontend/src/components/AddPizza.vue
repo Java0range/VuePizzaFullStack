@@ -28,7 +28,7 @@ const createItem = async () => {
         token: props.accessToken
       }
     }
-    const { data } = await axios.post("/upload", formData, headers)
+    const { data } = await axios.post("/upload", formData)
     const formDataItem = {
       name: nameItems.value,
       img: data,
